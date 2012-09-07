@@ -2,24 +2,23 @@ package Data::Structure::Compare;
 
 use Exporter;
 our @ISA       = qw(Exporter);
-our @EXPORT_OK = qw(hashes_to_hash hash_compare);
+our @EXPORT_OK = qw(hashes_to_hash structure_compare);
 
 use strict;
 use warnings;
-use 5.010;
-use YAML qw(Dump);
+use 5.006;
 
 =head1 NAME
 
-Data::Structure::Compare - The great new Data::Structure::Compare!
+Data::Structure::Compare : Compare the structure of two Hash reference
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 # ----------------------------------
 # compare hash, hash must is reference
 #
@@ -72,25 +71,41 @@ sub _transfer_hash {
 }
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
+    use Data::Structure::Compare qw(structure_compare);
 
-Perhaps a little code snippet.
+    my $data1 = {
+        key1 => 1,
+        key2 => 2,
+        key3 => {
+            key4 => 3,
+            key5 => {
+                key6 => 4,
+            },
+        },
+    };
 
-    use Data::Structure::Compare;
+    my $data1 = {
+        key1 => 11,
+        key2 => 12,
+        key3 => {
+            key4 => 13,
+            key5 => {
+                key6 => 14,
+            },
+        },
+    };
 
-    my $foo = Data::Structure::Compare->new();
+    if (structure_compare($data1, $data2) == 1) {
+        print '$data1 and $data2 have same structure';
+    }
     ...
 
 =head1 EXPORT
 
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
+structure_compare : compare two Hash reference, Only compare the key name
+In default, This module could compare the max depth is 100. It would not
+compare the value with Array reference.
 
-=head1 SUBROUTINES/METHODS
-
-=head2 function1
-
-=cut
 =head1 AUTHOR
 
 Micheal Song, C<< <perlvim at gmail.com> >>
@@ -100,9 +115,6 @@ Micheal Song, C<< <perlvim at gmail.com> >>
 Please report any bugs or feature requests to C<bug-data-structure-compare at rt.cpan.org>, or through
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Data-Structure-Compare>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
-
-
-
 
 =head1 SUPPORT
 
